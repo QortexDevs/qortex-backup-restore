@@ -1,0 +1,34 @@
+FROM python:3.11.2
+
+ARG PROJECT_NAME
+ARG DB_CONTAINER_NAME
+ARG MEDIA_CONTAINER_NAME
+
+ARG DB_NAME
+ARG DB_USERNAME
+ARG DB_PASSWORD
+
+ARG S3_AWS_ACCESS_KEY_ID
+ARG S3_AWS_SECRET_ACCESS_KEY
+ARG S3_ENDPOINT_URL
+ARG S3_BUCKET_NAME
+
+
+ENV DB_NAME=${DB_NAME}
+ENV DB_USERNAME=${DB_USERNAME}
+ENV DB_PASSWORD=${DB_PASSWORD}
+
+ENV S3_AWS_ACCESS_KEY_ID=${S3_AWS_ACCESS_KEY_ID}
+ENV S3_AWS_SECRET_ACCESS_KEY=${S3_AWS_SECRET_ACCESS_KEY}
+ENV S3_ENDPOINT_URL=${S3_ENDPOINT_URL}
+ENV S3_BUCKET_NAME=${S3_BUCKET_NAME}
+
+ENV PYTHONUNBUFFERED=1
+RUN apt update && apt upgrade -y && apt install -y default-mysql-client postgresql-client
+WORKDIR /code
+COPY requirements.txt /code/
+RUN pip install -r requirements.txt
+COPY . /code/
+RUN cp -f /code/app/.env.docker /code/app/.env
+
+CMD [ "gunicorn", "-b", "0.0.0.0:8000", "app:app" ]
