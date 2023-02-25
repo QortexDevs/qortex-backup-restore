@@ -10,6 +10,7 @@ services:
         - DB_CONTAINER_NAME=%%project-name%%-db
         - MEDIA_CONTAINER_NAME=%%project-name%%-backend
 
+        - DB_HOST=%%database-host%%
         - DB_NAME=%%database-name%%
         - DB_USERNAME=%%database-username%%
         - DB_PASSWORD=%%database-password%%

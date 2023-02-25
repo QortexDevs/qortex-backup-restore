@@ -6,6 +6,7 @@ from helpers.helpers import prepare_file_path, restore_postgres_db_from_gz
 db_container_name = os.environ.get('DB_CONTAINER_NAME')
 project_name = os.environ.get('PROJECT_NAME')
 
+db_host = os.environ.get('DB_HOST')
 db_name = os.environ.get('DB_NAME')
 db_username = os.environ.get('DB_USERNAME')
 db_password = os.environ.get('DB_PASSWORD')

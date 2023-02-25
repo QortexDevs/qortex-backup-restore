@@ -62,3 +62,19 @@ def restore_mysql_db_from_gz(db_container_name: str, db_name: str, db_username: 
     command = f'cat {raw_sql_backup_file_path} | docker exec -i {db_container_name} sh -c \'MYSQL_PWD=\"{db_password}\" mysql -u\"{db_username}\" --database={db_name}\''
     popen = subprocess.Popen(
         command, stdout=subprocess.PIPE, universal_newlines=True, shell=True)
+
+
+def restore_network_mysql_db_from_gz(db_host: str, db_name: str, db_username: str, db_password: str, gz_sql_backup_file_path: str, raw_sql_backup_file_path: str) -> None:
+    with gzip.open(gz_sql_backup_file_path, 'rb') as f_in:
+        with open(raw_sql_backup_file_path, 'wb') as f_out:
+            shutil.copyfileobj(f_in, f_out)
+    command = f'cat {raw_sql_backup_file_path} | mysql --host={db_host} --user=\"{db_username}\" --database={db_name}'
+    subprocess.check_output(command, shell=True, universal_newlines=True)
+
+
+def restore_network_postgres_db_from_gz(db_host: str, db_name: str, db_username: str, db_password: str, gz_sql_backup_file_path: str, raw_sql_backup_file_path: str) -> None:
+    with gzip.open(gz_sql_backup_file_path, 'rb') as f_in:
+        with open(raw_sql_backup_file_path, 'wb') as f_out:
+            shutil.copyfileobj(f_in, f_out)
+    command = f'cat {raw_sql_backup_file_path} | psql -h {db_host} -U {db_username}'
+    subprocess.check_output(command, shell=True, universal_newlines=True)
