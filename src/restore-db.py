@@ -1,7 +1,7 @@
 import boto3
 import os
 
-from helpers.helpers import prepare_file_path, restore_postgres_db_from_gz
+from helpers.helpers import prepare_file_path, restore_network_postgres_db_from_gz
 
 db_container_name = os.environ.get('DB_CONTAINER_NAME')
 project_name = os.environ.get('PROJECT_NAME')
@@ -33,8 +33,9 @@ s3_backup_root = 'backups/'
 s3_client.download_file(
     s3_bucket_name,
     f'{s3_backup_root}{storage_directory}/latest.sql.gz', gz_sql_backup_file_path)
-restore_postgres_db_from_gz(
-    db_container_name,
+
+restore_network_postgres_db_from_gz(
+    db_host,
     db_name,
     db_username,
     db_password,
