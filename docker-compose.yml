@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  backend:
-    image: qortex-backup-restore
+  backup-restore:
+    image: %%project-name%%-backup-restore
     build:
       context: ./
       args:
@@ -20,4 +20,4 @@ services:
         - S3_ENDPOINT_URL=%%s3-endpoint-url%%
         - S3_BUCKET_NAME=%%s3-bucket-name%%
 
-    container_name: qortex-backup-restore
+    container_name: %%project-name%%-backup-restore

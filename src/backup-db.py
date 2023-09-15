@@ -30,6 +30,7 @@ gz_sql_backup_file_path = prepare_file_path(storage_directory, project_name, 'la
 
 backup_postgres_db_to_gz(db_container_name, db_name,
                          db_username, db_password, gz_sql_backup_file_path)
+
 s3_client.upload_file(gz_sql_backup_file_path, s3_bucket_name,
                       f'{s3_backup_root}{storage_directory}/latest.sql.gz')
 s3_client.upload_file(gz_sql_backup_file_path, s3_bucket_name,
